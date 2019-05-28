@@ -354,8 +354,14 @@ int CLI::run(int argc, char **argv) {
     if (actions.empty()) {
 #ifdef USE_WX
         GUI::App *gui = new GUI::App();
+        try {
         gui->autosave = this->config.getString("autosave");
         gui->datadir  = this->config.getString("datadir");
+        } catch(UnknownOptionException u) {
+            gui->autosave = "default.autosave";
+            gui->datadir  = "";
+            Slic3r::Log::error("GUI") << "autosave or datadir config parameters not set" << "\n";
+        }
         GUI::App::SetInstance(gui);
         wxEntry(argc, argv);
 #else

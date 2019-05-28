@@ -67,7 +67,7 @@ if (MSVC)
     endif()
 else()    
     if (CMAKE_BUILD_TYPE MATCHES Debug)
-        add_compile_options(-g -O0)
+        add_compile_options(-g3 -ggdb -O0)
     elseif (CMAKE_BUILD_TYPE MATCHES Release)
         add_compile_options(-O3)
     elseif (CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
@@ -229,10 +229,12 @@ add_library(libslic3r STATIC
 target_compile_features(libslic3r PUBLIC cxx_std_11)
 target_include_directories(libslic3r SYSTEM PUBLIC ${SLIC3R_INCLUDES})
 target_include_directories(libslic3r PUBLIC ${LIBSLIC3R_INCLUDES})
+install(TARGETS libslic3r DESTINATION lib)
 
 add_library(BSpline STATIC
     ${LIBDIR}/BSpline/BSpline.cpp
 )
+install(TARGETS BSpline DESTINATION lib)
 target_include_directories(BSpline PUBLIC ${BSPLINE_INCLUDES})
 target_compile_options(BSpline PUBLIC -w)
 
@@ -244,6 +246,7 @@ add_library(admesh STATIC
     ${LIBDIR}/admesh/stlinit.c
     ${LIBDIR}/admesh/util.c
 )
+install(TARGETS admesh DESTINATION lib)
 target_include_directories(admesh PUBLIC ${ADMESH_INCLUDES} ${COMMON_INCLUDES})
 set_property(TARGET admesh PROPERTY C_STANDARD 99)
 target_compile_options(admesh PUBLIC -w)
@@ -253,12 +256,15 @@ add_library(clipper STATIC ${LIBDIR}/clipper.cpp)
 target_compile_features(clipper PUBLIC cxx_std_11)
 target_include_directories(clipper PUBLIC ${COMMON_INCLUDES})
 target_compile_options(clipper PUBLIC -w)
+install(TARGETS clipper DESTINATION lib)
 
 add_library(expat STATIC
     ${LIBDIR}/expat/xmlparse.c
     ${LIBDIR}/expat/xmlrole.c
     ${LIBDIR}/expat/xmltok.c
 )
+install(TARGETS expat DESTINATION lib)
+
 target_compile_features(expat PUBLIC cxx_std_11)
 target_include_directories(expat PUBLIC ${EXPAT_INCLUDES})
 target_compile_options(expat PUBLIC -w)
@@ -266,6 +272,7 @@ target_compile_options(expat PUBLIC -w)
 add_library(polypartition STATIC ${LIBDIR}/polypartition.cpp)
 target_include_directories(polypartition PUBLIC ${COMMON_INCLUDES})
 target_compile_options(polypartition PUBLIC -w)
+install(TARGETS polypartition DESTINATION lib)
 
 add_library(poly2tri STATIC
     ${LIBDIR}/poly2tri/common/shapes.cc
@@ -276,6 +283,7 @@ add_library(poly2tri STATIC
 )
 target_include_directories(poly2tri PUBLIC ${COMMON_INCLUDES})
 target_compile_options(poly2tri PUBLIC -w)
+install(TARGETS poly2tri DESTINATION lib)
 
 set(UI_TEST_SOURCES
     slic3r.cpp
@@ -429,6 +437,7 @@ IF(wxWidgets_FOUND AND OPENGL_FOUND AND Enable_GUI)
     #only build GUI lib if building with wx
     target_link_libraries (slic3r slic3r_gui ${wxWidgets_LIBRARIES} ${OPENGL_LIBRARIES})
     add_compile_options(-DUSE_WX)
+    install(TARGETS slic3r_gui DESTINATION lib)
 
     if (GUI_BUILD_TESTS)
         enable_testing()
@@ -468,6 +477,9 @@ IF(wxWidgets_FOUND AND OPENGL_FOUND AND Enable_GUI)
         target_include_directories(gui_test PUBLIC cxx_std_14 ${SLIC3R_GUI_INCLUDES} )
         target_include_directories(gui_test PUBLIC ${TESTDIR})
         target_compile_options(gui_test PUBLIC -DBUILD_TEST)
+        install(TARGETS gui_test DESTINATION bin)
+
+
     endif()
     if (WIN32)
         target_link_libraries(slic3r uxtheme)    
@@ -491,6 +503,7 @@ if (BUILD_EXTRUDE_TIN)
     add_executable(extrude-tin utils/extrude-tin.cpp)
     set_target_properties(extrude-tin PROPERTIES LINK_SEARCH_START_STATIC 1)
     set_target_properties(extrude-tin PROPERTIES LINK_SEARCH_END_STATIC 1)
+    install(TARGETS extrude-tin DESTINATION bin)
 endif() 
 
 # Windows needs a compiled component for Boost.nowide
@@ -555,6 +568,8 @@ if (SLIC3R_BUILD_TESTS)
     target_include_directories(slic3r_test PUBLIC ${TESTDIR})
 
     target_link_libraries(slic3r_test PUBLIC libslic3r Catch ${LIBSLIC3R_DEPENDS})
+    install(TARGETS slic3r_test DESTINATION bin)
+
 endif()
 
 if (BUILD_EXTRUDE_TIN)
@@ -562,3 +577,5 @@ if (BUILD_EXTRUDE_TIN)
 endif()
 
 
+install(TARGETS slic3r DESTINATION bin)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/../var DESTINATION .)
