@@ -9,7 +9,12 @@
 
 namespace Slic3r {
 
-Polyline FillGyroid::makeLineVert(double xPos, double yPos, double width, double height, double currentXBegin, double segmentSize, coord_t scaleFactor, 
+    FillGyroid::FillGyroid()
+    {
+        scaling = 1.75;
+    }
+
+    Polyline FillGyroid::makeLineVert(double xPos, double yPos, double width, double height, double currentXBegin, double segmentSize, coord_t scaleFactor, 
         double zCs, double zSn, bool flip, double decal){
     double maxSlope = abs(abs(zCs)-abs(zSn));
     Polyline polyline;

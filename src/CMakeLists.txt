@@ -48,11 +48,13 @@ add_library(libslic3r STATIC
     ${LIBDIR}/libslic3r/ExtrusionEntity.cpp
     ${LIBDIR}/libslic3r/ExtrusionEntityCollection.cpp
     ${LIBDIR}/libslic3r/Fill/Fill.cpp
+    ${LIBDIR}/libslic3r/Fill/FillType.cpp
     ${LIBDIR}/libslic3r/Fill/Fill3DHoneycomb.cpp
     ${LIBDIR}/libslic3r/Fill/FillConcentric.cpp
     ${LIBDIR}/libslic3r/Fill/FillHoneycomb.cpp
     ${LIBDIR}/libslic3r/Fill/FillPlanePath.cpp
     ${LIBDIR}/libslic3r/Fill/FillRectilinear.cpp
+    ${LIBDIR}/libslic3r/Fill/FillGyroid.cpp
     ${LIBDIR}/libslic3r/Flow.cpp
     ${LIBDIR}/libslic3r/GCode.cpp
     ${LIBDIR}/libslic3r/GCode/CoolingBuffer.cpp

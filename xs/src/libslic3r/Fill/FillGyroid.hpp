@@ -5,7 +5,7 @@
 
 #include "../libslic3r.h"
 
-#include "Fill.hpp"
+//#include "Fill.hpp"
 
 namespace Slic3r {
 
@@ -13,9 +13,9 @@ class FillGyroid : public Fill
 {
 public:
 
-    FillGyroid(){ scaling = 1.75; }
+    FillGyroid();
     virtual Fill* clone() const { return new FillGyroid(*this); };
-    virtual ~FillGyroid() {}
+    virtual ~FillGyroid() {};
 
     /// require bridge flow since most of this pattern hangs in air
     virtual bool use_bridge_flow() const { return true; }
