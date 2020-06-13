@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 3.9)
 project (slic3r)
 
 # only on newer GCCs: -ftemplate-backtrace-limit=0
@@ -175,3 +175,5 @@ IF (WIN32)
 ENDIF(WIN32)
 
 target_link_libraries (extrude-tin libslic3r admesh BSpline clipper expat polypartition poly2tri ${Boost_LIBRARIES})
+install(TARGETS slic3r DESTINATION bin)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/../var DESTINATION .)
